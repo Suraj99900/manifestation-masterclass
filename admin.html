@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Config Admin</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .config-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #EC8D2B;
+            outline: none;
+        }
+
+        .btn-save {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #EC8D2B, #d35400);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 15px;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(236, 141, 43, 0.3);
+        }
+
+        .btn-download {
+            background: #34495e;
+        }
+
+        .success-msg {
+            text-align: center;
+            color: #27ae60;
+            font-weight: bold;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            font-size: 14px;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .links a {
+            color: #EC8D2B;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .note {
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="config-card">
+        <h2>⚙️ Event Configuration</h2>
+
+        <div style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label>Dates (e.g. 31st Feb)</label>
+                <input type="text" id="eventDate">
+            </div>
+            <div class="form-group" style="width: 100px;">
+                <label>Duration</label>
+                <input type="text" id="eventDays" placeholder="2">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Time (e.g. 10 AM - 12 PM)</label>
+            <input type="text" id="eventTime">
+        </div>
+
+        <div class="form-group">
+            <label>Registration Deadline</label>
+            <input type="text" id="deadline">
+        </div>
+
+        <div style="display: flex; gap: 20px;">
+            <div class="form-group" style="flex: 1;">
+                <label>Price (₹)</label>
+                <input type="number" id="price">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Original (₹)</label>
+                <input type="number" id="originalPrice">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Bonus (₹)</label>
+                <input type="text" id="bonusVal">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Payment Link (Razorpay/Stripe URL)</label>
+            <input type="text" id="paymentLink" placeholder="https://...">
+            <p class="note" style="text-align: left;">Leave blank to use default popup.</p>
+        </div>
+
+        <div class="form-group">
+            <label>Meeting Link (Zoom/Google Meet)</label>
+            <input type="text" id="meetingLink" placeholder="https://...">
+        </div>
+
+        <button class="btn-save" onclick="saveToServer()">🚀 Save Instantly (Requires Server)</button>
+        <button class="btn-save btn-download" onclick="downloadConfig()">💾 Manual Download (Fallback)</button>
+
+        <p class="success-msg" id="msg"></p>
+
+        <div class="links">
+            <a href="index.html" target="_blank">Open Landing Page ➜</a>
+        </div>
+    </div>
+
+    <script>
+        // Load config
+        fetch('js/config.json')
+            .then(r => r.json())
+            .then(config => {
+                document.getElementById('eventDate').value = config.eventDate || "";
+                document.getElementById('eventTime').value = config.eventTime || "";
+                document.getElementById('deadline').value = config.deadline || "";
+                document.getElementById('price').value = config.price || "";
+                document.getElementById('originalPrice').value = config.originalPrice || "";
+                document.getElementById('bonusVal').value = config.bonusVal || "";
+                document.getElementById('eventDays').value = config.eventDays || "";
+                document.getElementById('paymentLink').value = config.paymentLink || "";
+                document.getElementById('meetingLink').value = config.meetingLink || "";
+            });
+
+        function getConfig() {
+            return {
+                eventDate: document.getElementById('eventDate').value,
+                eventTime: document.getElementById('eventTime').value,
+                deadline: document.getElementById('deadline').value,
+                price: document.getElementById('price').value,
+                originalPrice: document.getElementById('originalPrice').value,
+                bonusVal: document.getElementById('bonusVal').value,
+                eventDays: document.getElementById('eventDays').value,
+                paymentLink: document.getElementById('paymentLink').value,
+                meetingLink: document.getElementById('meetingLink').value
+            };
+        }
+
+        // Attempt to save to Node server
+        function saveToServer() {
+            const config = getConfig();
+            const msg = document.getElementById('msg');
+
+            fetch('/save-config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(config)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        msg.innerText = "✅ Successfully Saved to Server!";
+                        msg.style.color = "#27ae60";
+                        msg.style.opacity = '1';
+                        setTimeout(() => { msg.style.opacity = '0'; }, 3000);
+                    } else {
+                        throw new Error("Server error");
+                    }
+                })
+                .catch(err => {
+                    msg.innerText = "⚠️ Server Not Running. Try 'Manual Download'.";
+                    msg.style.color = "#e74c3c";
+                    msg.style.opacity = '1';
+                });
+        }
+
+        // Fallback Download
+        function downloadConfig() {
+            const config = getConfig();
+            const blob = new Blob([JSON.stringify(config, null, 4)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "config.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+
+</body>
+
+</html>
