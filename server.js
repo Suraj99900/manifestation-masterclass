@@ -2,6 +2,11 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
+const express = require('express');
+const app = express();
+
+app.use(express.static(path.join(__dirname)));
+
 const PORT = 3000;
 const PUBLIC_DIR = __dirname; // Current directory
 
@@ -47,8 +52,13 @@ const server = http.createServer((req, res) => {
     }
 
     // Handle Static Files (GET) - Serves html, css, js, images
-    let filePath = path.join(PUBLIC_DIR, req.url === '/' ? 'index.html' : req.url);
-    const extname = path.extname(filePath);
+    // Parse URL to ignore query strings (e.g. style.css?ver=1.0)
+    const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+    let pathname = parsedUrl.pathname;
+
+    // Normalize path to prevent directory traversal
+    let filePath = path.join(PUBLIC_DIR, pathname === '/' ? 'index.html' : pathname);
+    const extname = path.extname(filePath).toLowerCase();
     let contentType = 'text/html';
 
     switch (extname) {
