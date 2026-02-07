@@ -241,6 +241,155 @@
         }
     </style>
     <style>
+        /* FOMO Notification Popup Styles */
+        .fomo-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #ffffff;
+            color: #333;
+            padding: 12px 18px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 99999;
+            /* Higher than anything else */
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            border-left: 4px solid #EC8D2B;
+            /* Brand color accent */
+            pointer-events: none;
+        }
+
+        .fomo-notification.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .fomo-notification.hide {
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .fomo-icon {
+            font-size: 24px;
+        }
+
+        .fomo-content {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.4;
+        }
+
+        .fomo-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #000;
+        }
+
+        .fomo-meta {
+            font-size: 11px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .verified-badge {
+            color: #1DA1F2;
+            font-size: 12px;
+        }
+
+        .close-fomo {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            font-size: 16px;
+            color: #aaa;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-fomo:hover {
+            color: #333;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .fomo-notification {
+                bottom: 90px;
+                /* Above the mobile sticky footer */
+                left: 50%;
+                transform: translateX(-50%) translateY(20px);
+                width: auto;
+                min-width: 300px;
+                justify-content: flex-start;
+                border-radius: 50px;
+                /* Pill shape on mobile looks modern */
+                padding: 10px 20px;
+            }
+
+            .fomo-notification.active {
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* Global Scroll Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Slider for Video Section */
+        @media (max-width: 1024px) {
+            .elementor-element-7bfa3385 {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                scroll-snap-type: x mandatory;
+                gap: 15px !important;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 20px;
+                /* Space for scrollbar if visible */
+            }
+
+            .elementor-element-7bfa3385>.elementor-element {
+                flex: 0 0 85% !important;
+                /* Show most of the card, peek next one */
+                width: 85% !important;
+                max-width: 85% !important;
+                scroll-snap-align: center;
+            }
+
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            .elementor-element-7bfa3385::-webkit-scrollbar {
+                display: none;
+            }
+
+            /* Hide scrollbar for IE, Edge and Firefox */
+            .elementor-element-7bfa3385 {
+                -ms-overflow-style: none;
+                /* IE and Edge */
+                scrollbar-width: none;
+                /* Firefox */
+            }
+        }
+    </style>
+    <style>
         body {
             background-color: #2B2C31;
         }
@@ -1230,37 +1379,7 @@
             }
         }
 
-        /* FOMO Notification Styles */
-        .fomo-notification {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: #fff;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            display: none;
-            align-items: center;
-            gap: 15px;
-            z-index: 9999;
-            max-width: 350px;
-            animation: slideIn 0.5s ease-out;
-            font-family: 'Poppins', sans-serif;
-            border-left: 4px solid #EC8D2B;
-        }
 
-        .fomo-notification.active {
-            display: flex;
-        }
-
-        .fomo-notification.hide {
-            animation: slideOut 0.5s ease-in forwards;
-        }
-
-        .fomo-notification img.social-media-logo {
-            width: 40px;
-            height: 40px;
-        }
 
         .close-btn {
             position: absolute;
@@ -2404,51 +2523,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                         मुलगी पास झाली</h2>
                                 </div>
                             </div>
-                            <div class="elementor-element elementor-element-28ab3b32 elementor-align-center elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list"
-                                data-id="28ab3b32" data-element_type="widget" data-widget_type="icon-list.default">
-                                <div class="elementor-widget-container">
-                                    <ul class="elementor-icon-list-items">
-                                        <li class="elementor-icon-list-item">
-                                            <span class="elementor-icon-list-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M230 94c-2 0-5-1-6-3-7-9-20-20-39-18-23 2-41-5-51-12a8 8 0 0 1 8-13c9 5 22 11 41 9 28-3 46 14 53 25a8 8 0 0 1-6 12z"
-                                                        fill="#ffd064"></path>
-                                                    <path
-                                                        d="m149 135-4-1c-3-2-5-7-2-11 10-16 28-27 52-32 18-3 33-2 34-2a8 8 0 0 1-2 15s-53-3-71 28c-2 2-4 3-7 3z"
-                                                        fill="#ffd064"></path>
-                                                    <path
-                                                        d="M266 431c127 0 197-186-4-330-5-3-8-9-8-15 1-5 2-10 5-14 9-14 23-36 31-55 2-4-1-9-6-9-12 0-12-8-24-8s-12 8-24 8c-10 0-15-9-20-3-14 19 36 85 36 85-220 145-149 341-20 341h34z"
-                                                        fill="#eabc6b"></path>
-                                                    <path
-                                                        d="M316 90s50-66 36-84c-5-7-10 2-20 2-12 0-12-8-24-8s-12 8-24 8h-2c-5 21-26 53-39 70l9 12-9 6c210 144 140 335 11 335h81c131 0 201-196-19-341z"
-                                                        fill="#e8ae4d"></path>
-                                                    <path
-                                                        d="M325 113c-29 8-58 8-88 0-10-2-16-14-12-24v-1c3-8 12-13 20-11 24 6 48 6 72 0 8-2 17 3 20 11v1c4 10-2 22-12 24z"
-                                                        fill="#ffe07d"></path>
-                                                    <path
-                                                        d="m49 465 112 42c9 3 19 5 29 5h116c16 0 32-5 45-13l144-92c10-8 12-22 5-33-8-11-21-13-35-7l-141 62v-23c-2-18-16-33-35-36l-85-10c-20-3-30-9-47-19-24-14-50-21-78-21H49z"
-                                                        fill="#ffddce"></path>
-                                                    <path
-                                                        d="M154 484c10 4 20 6 31 6h121c13 0 26-3 37-8l85-54c8-5 13-13 13-23 0-5-2-10-5-14l-5-9-107 47v-23c-2-18-16-33-35-36l-85-10c-20-3-30-9-47-19-24-14-50-21-78-21H49v125z"
-                                                        fill="#ffddce"></path>
-                                                    <path
-                                                        d="M500 374c-8-11-21-13-35-7l-39 17 3 6c7 10 6 24-4 33l-84 53c-11 5-23 8-35 8H190c-10 0-20-2-29-5L49 437v28l112 42c9 3 19 5 29 5h116c16 0 32-5 45-13l144-92c10-8 12-22 5-33z"
-                                                        fill="#ffcbbe"></path>
-                                                    <path d="M314 383z" fill="#f5dbcc"></path>
-                                                    <path d="M324 429h-87a8 8 0 1 1 0-15h87z" fill="#ffcbbe"></path>
-                                                    <path
-                                                        d="M73 487c0 8-7 15-15 15H23c-8 0-15-7-15-15V307c0-8 7-14 15-14h35c8 0 15 6 15 14z"
-                                                        fill="#407093"></path>
-                                                    <path
-                                                        d="m301 239-10-3v-49c9 1 14 6 15 6a8 8 0 0 0 10-11c0-1-10-9-25-11v-11a8 8 0 1 0-16 0v12l-5 1c-13 4-23 15-26 29-2 13 2 25 11 33 5 4 11 7 20 11v61c-9 0-14-2-24-8a8 8 0 0 0-8 13c12 8 21 10 32 11v12a8 8 0 1 0 16 0v-13c22-3 34-21 37-37 3-21-7-38-27-46zm-37-17c-4-3-6-10-5-17 1-6 6-14 15-17l1-1v42l-11-7zm49 60c-2 10-9 21-22 24v-54l4 2c20 7 18 23 18 28z"
-                                                        fill="#fff"></path>
-                                                </svg> </span>
-                                            <span class="elementor-icon-list-text">50 Lakh Manifested</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="elementor-element elementor-element-36919b40 e-con-full e-flex e-con e-child"
                             data-id="36919b40" data-element_type="container"
@@ -2488,56 +2563,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                         कमावले</h2>
                                 </div>
                             </div>
-                            <div class="elementor-element elementor-element-75b9abb4 elementor-align-center elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list"
-                                data-id="75b9abb4" data-element_type="widget" data-widget_type="icon-list.default">
-                                <div class="elementor-widget-container">
-                                    <ul class="elementor-icon-list-items">
-                                        <li class="elementor-icon-list-item">
-                                            <span class="elementor-icon-list-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                                    width="512" height="512">
-                                                    <g id="Fill_out_line" data-name="Fill out line">
-                                                        <path
-                                                            d="M254.75,168.54a18.5881,18.5881,0,0,1,6.82007,4.67993C272.51,185.05005,268.08008,210.37988,240,216c-40,8-104,32-160,24-23.8-3.3999-46.15991-1.02-64,2.8501V127.37988c15.21-4.5498,30.11-9.58984,40.83008-14.5498C120,72,208,64,240,64c24.53,0,34.96,18.81006,20.46,34.80005a16.3506,16.3506,0,0,1,5.03,6.37988c3.25,7.24,1.65,17.19019-6.13,25.90015a16.3047,16.3047,0,0,1,5.4801,5.84985C269.59009,145.45,267.04,158.46,254.75,168.54Z"
-                                                            style="fill:#f5a971"></path>
-                                                        <path
-                                                            d="M344,104a56,56,0,1,0,56,56A55.99746,55.99746,0,0,0,344,104Zm0,96a40,40,0,1,1,40-40A40.00182,40.00182,0,0,1,344,200Z"
-                                                            style="fill:#f3b73f"></path>
-                                                        <path
-                                                            d="M376.09009,83.37012A23.863,23.863,0,0,1,367.48,101.76L360,108H328l-7.48-6.24a23.90738,23.90738,0,0,1-4.59009-31.65015,6.01849,6.01849,0,0,1,9.22009-.96,3.23054,3.23054,0,0,1,.25.27A5.96076,5.96076,0,0,1,326.96,73.45a6.02351,6.02351,0,0,1-.42993,2.24A11.81505,11.81505,0,0,0,330,89.29,11.738,11.738,0,0,0,337.57007,92h12.85986A11.738,11.738,0,0,0,358,89.29a11.86612,11.86612,0,0,0,3.47-13.6001,6.0087,6.0087,0,0,1,1.12012-6.26c.06982-.07983.13989-.15991.22-.24a6.0179,6.0179,0,0,1,9.26.91992A23.82981,23.82981,0,0,1,376.09009,83.37012Z"
-                                                            style="fill:#f3b73f"></path>
-                                                        <path
-                                                            d="M330.83972,69.14408h0A17.6298,17.6298,0,0,1,343.28628,64h1.37027a17.72868,17.72868,0,0,1,12.53606,5.19261h0a19.34273,19.34273,0,0,1,4.2819,6.49367v0A11.89574,11.89574,0,0,1,350.4296,92H337.57039a11.89574,11.89574,0,0,1-11.04491-16.3137l.01083-.02707A19.34275,19.34275,0,0,1,330.83972,69.14408Z"
-                                                            style="fill:#e7f2da"></path>
-                                                        <path d="M338,96V82a6,6,0,0,1,6-6h0a6,6,0,0,1,6,6V96Z"
-                                                            style="fill:#f3b73f"></path>
-                                                        <path
-                                                            d="M240,208H440a0,0,0,0,1,0,0v96a16,16,0,0,1-16,16H256a16,16,0,0,1-16-16V208A0,0,0,0,1,240,208Z"
-                                                            style="fill:#0c6c71"></path>
-                                                        <path
-                                                            d="M240,24V224H192a47.83312,47.83312,0,0,1-35.91992-16.16992A47.05209,47.05209,0,0,1,150.26,199.72,47.72716,47.72716,0,0,1,144,176V72a47.99956,47.99956,0,0,1,48-48Z"
-                                                            style="fill:#0c6c71"></path>
-                                                        <path
-                                                            d="M240,208v16H192a47.83312,47.83312,0,0,1-35.91992-16.16992A47.05209,47.05209,0,0,1,150.26,199.72,47.72716,47.72716,0,0,1,144,176V160a47.72716,47.72716,0,0,0,6.26,23.72,47.05209,47.05209,0,0,0,5.82007,8.11011A47.83312,47.83312,0,0,0,192,208Z"
-                                                            style="fill:#084c4f"></path>
-                                                        <path
-                                                            d="M240,208l0,0a109.25471,109.25471,0,0,1,77.25476-32h45.49042A109.25471,109.25471,0,0,1,440,208l0,0Z"
-                                                            style="fill:#db6373"></path>
-                                                        <path
-                                                            d="M485.59009,342.62988a55.85845,55.85845,0,0,1-11.05,38.2002,45.0593,45.0593,0,0,1-5.8501,17.97C454.04,424.46,415.02,440,376,440c-53.56006,0-129.07007,0-198.55,56H37.33008L48,488c24-16,96-88,120-112s24-64,24-96,48-32,48,0c0,24,0,88,88,88,96,0,112-72,112-88,0-32,48-32,48,0,0,6.72,1.40991,26.15991-5.27,47.62988A71.42925,71.42925,0,0,1,485.59009,342.62988Z"
-                                                            style="fill:#f5a971"></path>
-                                                        <path d="M88,136c32,0,64,24,96,24s32,40,0,40S72,200,32,184Z"
-                                                            style="fill:#f5a971"></path>
-                                                        <path
-                                                            d="M496.04,282.87988C496.02,281.75,496,280.78,496,280c0-21.01-16.1-32-32-32a33.96637,33.96637,0,0,0-16,3.96V208a8.00827,8.00827,0,0,0-2.34009-5.66016,117.72932,117.72932,0,0,0-39.74-26.08984,64.14061,64.14061,0,0,0-29.86987-71.67993A31.9191,31.9191,0,0,0,378.72,65.66992a14.035,14.035,0,0,0-18.53-4.45,25.92763,25.92763,0,0,0-15.53-5.22H343.29a25.44088,25.44088,0,0,0-15.5,5.21,14.03653,14.03653,0,0,0-18.52,4.47A31.81474,31.81474,0,0,0,311.95,104.57007a64.12786,64.12786,0,0,0-30.5,69.03c-2.85986.91992-5.68994,1.95-8.47,3.08984a28.08918,28.08918,0,0,0-5.91992-9.29c5.59-7.06982,8.42993-15.1499,7.97-23.13989A25.65819,25.65819,0,0,0,269.97,130.17993a32.477,32.477,0,0,0,4.98-20.03A25.45141,25.45141,0,0,0,270.79,98.27c4.77-7.97,5.62988-16.76,2.2-24.52-4.06006-9.1499-13.13-15.26-24.99-17.14014V24a7.9979,7.9979,0,0,0-8-8H192a56.06073,56.06073,0,0,0-55.98,54.62012c-32.23,8.63989-60.14,20.46-83.05,35.17993-9.77,4.46-23.12988,9.02-36.97,13.21v12.56006c15.73-4.67993,31.28-9.92017,42.51-15.11011a2.89492,2.89492,0,0,0,.49-.27C81.15991,101.87012,108.39,90.37988,140,81.99v29.81006c-6.59009,1.77-11.11,3.28-13.79,4.61987a4.00266,4.00266,0,0,0,3.58008,7.16016A62.96032,62.96032,0,0,1,140,120.08984V145.23c-.86-.33008-1.73-.6499-2.6-.98C121.34009,138.23,104.73,132,88,132a4,4,0,0,0,0,8c15.27,0,30.49,5.71,46.6,11.75C150.65991,157.77,167.27,164,184,164c9.63,0,20,5.01,20,16s-10.37,16-20,16c-30.41992,0-111.23,0-150.51-15.71A3.998,3.998,0,1,0,30.51,187.71c29.61,11.8501,79.48,15.08008,117.46,15.96a52.20613,52.20613,0,0,0,32.27,22.97022c-31.75,7.6499-67.22,14.03979-99.66992,9.3999C56.5,232.6001,34.03,234.87012,16,238.7v12.36011a184.84447,184.84447,0,0,1,40.61-4.68994,158.011,158.011,0,0,1,22.26,1.5498,177.5723,177.5723,0,0,0,24.96008,1.68994C140,249.60986,177.64,239.89014,207.99,232H232v19.96A33.96637,33.96637,0,0,0,216,248c-15.9,0-32,10.99-32,32,0,30.6001,0,68.68994-21.65991,90.33984C75.22,457.47,41.85,487.05005,29.48,496H48.63c22.66-19.32007,63.59-58.56006,122.20008-117.16992C196,353.65991,196,312.82007,196,280c0-13.74,10.37-20,20-20s20,6.26,20,20c0,12.26,0,35.07007,11.54,55,14.21,24.55005,41.28,37,80.46,37,28.98,0,69-6.8501,95.12-39.5C439.64,311.85986,444,289.12988,444,280c0-13.74,10.37-20,20-20s20,6.26,20,20c0,.8501.02,1.90991.05,3.14014C484.27,293.72,484.79,318.5,472.47,342.2c-15.33,29.48-45.29,47.59009-89.04,53.84009a4.00078,4.00078,0,0,0,1.14014,7.91992c46.45-6.63989,78.40991-26.16992,95-58.06982.67993-1.32007,1.31994-2.63013,1.92993-3.9502A51.88177,51.88177,0,0,1,471.07007,378.79C449.99,407.1001,402.87,420,368,420a4,4,0,0,0,0,8,178.61015,178.61015,0,0,0,60.90991-10.96c14.57007-5.43994,27-12.53,36.72009-20.89014C451.86,421.37988,412.66992,436,376,436c-27.82007,0-62.43994,0-98.87,8.1001-40.30993,8.96-75.05993,25.96-105.99,51.8999h19.39c26.45-19.56006,55.81995-32.77,89.21-40.18994C314.88,448,348.77,448,376,448c25.36,0,50.08008-6.05,69.61-17.04,21-11.81006,33.92-28.49,36.62-47.13989,11.29-16.39014,14.33008-35.71021,8.83008-56.13013C496.58008,308.54,496.22,291.32007,496.04,282.87988ZM236,220H192a44.122,44.122,0,0,1-34.03-16.14014C168.09009,204,177.02,204,184,204c8.45,0,15.62-2.54,20.74-7.33008a22.76815,22.76815,0,0,0,0-33.33984C199.62,158.54,192.45,156,184,156c-11.89,0-23.74-3.46-36-7.84009V72a44.052,44.052,0,0,1,44-44h44ZM330.25,77.1499A15.32324,15.32324,0,0,1,333.65991,71.98,13.54013,13.54013,0,0,1,343.29,68h1.36987A13.63913,13.63913,0,0,1,354.36,72.02a15.3112,15.3112,0,0,1,3.4,5.1499,7.89939,7.89939,0,0,1-3.76,9.98V82a10,10,0,0,0-20,0v5.1499a7.89662,7.89662,0,0,1-3.75-10Zm-2.47,33.43018A4.00139,4.00139,0,0,0,329.1,103.7l-6.0199-5.01A19.89483,19.89483,0,0,1,319.25,72.33008,2.02159,2.02159,0,0,1,322.81006,74.2,15.8909,15.8909,0,0,0,334,95.58984V96a4,4,0,0,0,8,0V82a2,2,0,0,1,4,0V96a4,4,0,0,0,8,0v-.41016A15.8909,15.8909,0,0,0,365.18994,74.2a1.97088,1.97088,0,0,1-.1499-.75,2.026,2.026,0,0,1,3.71-1.11987,19.89483,19.89483,0,0,1-3.83008,26.35986L358.9,103.71a3.99394,3.99394,0,0,0,1.32,6.87012,52.02036,52.02036,0,0,1,33.2,65.59985c-2.56994-.72-5.16992-1.34009-7.79992-1.87988A43.5647,43.5647,0,0,0,388,160a44,44,0,1,0-86.04,13.03c-2.66992.34985-5.30994.8-7.93994,1.34985a52.04792,52.04792,0,0,1,33.76-63.7998ZM376,160a31.9218,31.9218,0,0,1-1.16992,8.62988A116.38935,116.38935,0,0,0,362.75,168h-45.5c-1.4,0-2.81006.03-4.22.08008A31.63143,31.63143,0,0,1,312,160a32,32,0,0,1,64,0Zm-58.75,20h45.5a104.46046,104.46046,0,0,1,66.90991,24H250.34009A104.46046,104.46046,0,0,1,317.25,180ZM244,68.2c10.24,1.01,17.48,5.92017,18.86,13.09009,1.66,8.60986-5.63,17.88989-18.86,24.53Zm0,46.46a60.724,60.724,0,0,0,16.47-10.21,14.59907,14.59907,0,0,1,2.45,10.81006C261.73,123.97,254.78,132.10986,244,137.76Zm0,31.98023A56.6301,56.6301,0,0,0,259.64,136.49,14.00079,14.00079,0,0,1,263,147.58008c-.87,9-7.85,17.40991-19,23.23ZM244,179.7a59.79211,59.79211,0,0,0,11.27-6.46A16.48173,16.48173,0,0,1,262.96,185.81006,113.02529,113.02529,0,0,0,244,198.87988ZM328,360c-24.57007,0-43.68994-5.26-56.81006-15.64014A53.6319,53.6319,0,0,1,257.39,328H411.26C388.35,354.1001,354.2,360,328,360Zm108-80c0,5.28-2.23,20.14014-11.29,35.96-.24.02-.47.04-.71.04H256v4a15.97164,15.97164,0,0,1-7.16992-1.68994C244,303.7,244,288.89014,244,280V212H436Z">
-                                                        </path>
-                                                    </g>
-                                                </svg> </span>
-                                            <span class="elementor-icon-list-text">Manifested Marriage</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="elementor-element elementor-element-63811339 e-con-full e-flex e-con e-child"
                             data-id="63811339" data-element_type="container"
@@ -2576,73 +2602,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                         महिन्याच्या आता clear झाले</h2>
                                 </div>
                             </div>
-                            <div class="elementor-element elementor-element-79b6b760 elementor-align-center elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list"
-                                data-id="79b6b760" data-element_type="widget" data-widget_type="icon-list.default">
-                                <div class="elementor-widget-container">
-                                    <ul class="elementor-icon-list-items">
-                                        <li class="elementor-icon-list-item">
-                                            <span class="elementor-icon-list-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1"
-                                                    viewBox="0 0 512 512" data-name="Layer 1">
-                                                    <path
-                                                        d="m34.432 37.535h342.1a24.656 24.656 0 0 1 24.6 24.6v425.265a24.656 24.656 0 0 1 -24.6 24.6h-342.1a24.676 24.676 0 0 1 -24.6-24.6v-425.269a24.676 24.676 0 0 1 24.6-24.6z"
-                                                        fill="#fea832" fill-rule="evenodd"></path>
-                                                    <path
-                                                        d="m54.423 68.921h302.118a13.246 13.246 0 0 1 13.2 13.2v385.291a13.221 13.221 0 0 1 -13.2 13.173h-302.118a13.2 13.2 0 0 1 -13.172-13.173v-385.289a13.221 13.221 0 0 1 13.172-13.2z"
-                                                        fill="#d5e3f2" fill-rule="evenodd"></path>
-                                                    <path
-                                                        d="m134.331 24.771h46.769c0-.117-.029-.233-.029-.35a24.407 24.407 0 1 1 48.814 0v.35h46.773a6.107 6.107 0 0 1 6.091 6.091v48.7h-154.538v-48.7a6.132 6.132 0 0 1 6.12-6.091z"
-                                                        fill="#4d6c8f" fill-rule="evenodd"></path>
-                                                    <path
-                                                        d="m205.438 31.619a7.2 7.2 0 1 1 0-14.4h.117a7.2 7.2 0 0 1 0 14.4z"
-                                                        fill="#d5e3f2"></path>
-                                                    <path
-                                                        d="m75.318 327.559a7.2 7.2 0 0 1 0-14.4h14.921a7.2 7.2 0 0 1 0 14.4zm37.477 0a7.2 7.2 0 0 1 0-14.4h222.88a7.2 7.2 0 0 1 0 14.4zm-37.477-39.517a7.2 7.2 0 0 1 0-14.4h14.921a7.2 7.2 0 1 1 0 14.4zm37.477 0a7.2 7.2 0 0 1 0-14.4h222.88a7.2 7.2 0 0 1 0 14.4zm-37.477 79a7.2 7.2 0 1 1 0-14.4h14.921a7.2 7.2 0 0 1 0 14.4zm37.477 0a7.2 7.2 0 1 1 0-14.4h222.88a7.2 7.2 0 0 1 0 14.4zm-37.477 39.492a7.2 7.2 0 1 1 0-14.4h14.921a7.2 7.2 0 0 1 0 14.4zm37.477 0a7.2 7.2 0 0 1 0-14.4h222.88a7.2 7.2 0 0 1 0 14.4zm-37.477 39.488a7.184 7.184 0 1 1 0-14.367h14.921a7.184 7.184 0 1 1 0 14.367zm37.477 0a7.184 7.184 0 1 1 0-14.367h222.88a7.184 7.184 0 1 1 0 14.367z"
-                                                        fill="#4d6c8f"></path>
-                                                    <path
-                                                        d="m384.343 271.373 12.618-12.619a61.655 61.655 0 0 1 87.194 87.194l-99.812 99.841-99.843-99.841a61.655 61.655 0 1 1 87.2-87.194z"
-                                                        fill="#fb4455" fill-rule="evenodd"></path>
-                                                    <path
-                                                        d="m305.017 338.079a7.2 7.2 0 1 1 0-14.4h32.115l9.238-19.079a7.179 7.179 0 0 1 9.588-3.352 7.092 7.092 0 0 1 3.526 3.73l15.358 32.115 16.2-38.526a7.175 7.175 0 0 1 13.318.262c3.352 8.831 6.761 17.457 10.375 26.141q2.492 5.945 5.129 11.89l4.255-9.034a7.266 7.266 0 0 1 6.5-4.138h33.018a7.2 7.2 0 1 1 0 14.4h-28.47l-8.918 18.855a7.192 7.192 0 0 1 -13 .029c-4.255-9-8.131-17.747-11.774-26.49-1.369-3.322-2.739-6.645-4.08-10.025l-15.533 36.894a7.171 7.171 0 0 1 -13.084.321l-15.97-33.4-4.488 9.267a7.191 7.191 0 0 1 -6.674 4.546z"
-                                                        fill="#d5e3f2"></path>
-                                                    <path
-                                                        d="m205.5 247.738a70.728 70.728 0 1 0 -70.758-70.728 70.855 70.855 0 0 0 70.758 70.728z"
-                                                        fill="#2eb851" fill-rule="evenodd"></path>
-                                                    <path
-                                                        d="m235.4 147.11a7.192 7.192 0 0 1 10.171 10.171l-49.633 49.629a7.159 7.159 0 0 1 -10.171 0l-20.367-20.341a7.2 7.2 0 0 1 10.2-10.169l15.241 15.241z"
-                                                        fill="#d5e3f2"></path>
-                                                    <g fill-rule="evenodd">
-                                                        <path
-                                                            d="m264.83 64.987h-136.619v14.571h154.542v-48.7a6.107 6.107 0 0 0 -6.091-6.091h-11.832z"
-                                                            fill="#3b5c82"></path>
-                                                        <path
-                                                            d="m197.278 106.748a70.739 70.739 0 0 1 0 140.524 69.326 69.326 0 0 0 8.219.466 70.728 70.728 0 1 0 0-141.456 69.115 69.115 0 0 0 -8.219.466z"
-                                                            fill="#1ca63e"></path>
-                                                        <path
-                                                            d="m468.855 345.948-67.727 67.726-24.45 24.479 7.665 7.636 16.785-16.815 83.027-83.026a61.6 61.6 0 0 0 -51.232-104.709 61.577 61.577 0 0 1 35.932 104.709z"
-                                                            fill="#e82e41"></path>
-                                                        <path
-                                                            d="m369.742 270.673 6.936-6.936-4.983-4.983c-.641-.641-1.282-1.282-1.953-1.865a61.592 61.592 0 0 0 -49.279-15.65 61.342 61.342 0 0 1 35.937 17.515l12.648 12.619z"
-                                                            fill="#e82e41"></path>
-                                                        <path
-                                                            d="m354.792 68.921v177.855a60.9 60.9 0 0 1 14.95 10.113v-174.766a13.246 13.246 0 0 0 -13.2-13.2z"
-                                                            fill="#b7cfe8"></path>
-                                                        <path
-                                                            d="m369.742 431.189-14.95-14.95v64.346h1.749a13.221 13.221 0 0 0 13.2-13.173z"
-                                                            fill="#b7cfe8"></path>
-                                                        <path
-                                                            d="m369.742 431.189v36.223a13.221 13.221 0 0 1 -13.2 13.173h-1.749v6.815a24.676 24.676 0 0 1 -24.593 24.6h46.336a24.656 24.656 0 0 0 24.6-24.6v-58.43l-16.785 16.815-7.665-7.636z"
-                                                            fill="#ed9e00"></path>
-                                                        <path
-                                                            d="m371.7 258.754 4.983 4.983 7.665 7.636 12.618-12.619c1.341-1.341 2.739-2.623 4.167-3.818v-192.805a24.656 24.656 0 0 0 -24.6-24.6h-46.333a24.676 24.676 0 0 1 24.6 24.6v6.79h1.749a13.246 13.246 0 0 1 13.2 13.2v174.768c.671.583 1.312 1.224 1.953 1.865z"
-                                                            fill="#ed9e00"></path>
-                                                    </g>
-                                                </svg> </span>
-                                            <span class="elementor-icon-list-text">Improved Health</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -2871,7 +2831,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <div class="elementor-element elementor-element-463805b2 elementor-widget elementor-widget-heading"
                             data-id="463805b2" data-element_type="widget" data-widget_type="heading.default">
                             <div class="elementor-widget-container">
-                                <p class="elementor-heading-title elementor-size-default"><b>Join 2 Days Workshop @
+                                <p class="elementor-heading-title elementor-size-default"><b>Join <span
+                                            class="conf-event-days"></span> Days Workshop @
                                         ₹<span class="conf-price"></span>
                                         <strike>₹<span class="conf-original-price"></span></strike></p>
                             </div>
@@ -3277,11 +3238,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     data-id="1719eae4" data-element_type="container">
                     <div class="elementor-element elementor-element-59c94138 elementor-widget__width-inherit elementor-widget elementor-widget-heading"
                         data-id="59c94138" data-element_type="widget" data-widget_type="heading.default">
-                        <div class="elementor-widget-container">
-                            <h2 class="elementor-heading-title elementor-size-default"><span style="color:#fff">Register
-                                    before </span>27 January<span style="color:#fff"> To unlock bonuses worth ₹
-                                    10,488/-</span></h2>
-                        </div>
+                        <h2 class="elementor-heading-title elementor-size-default"><span style="color:#ffffff">Register
+                                before </span><span class="conf-deadline"></span><span style="color:#ffffff"> To
+                                unlock bonuses worth ₹ <span class="conf-bonus-val"></span></span>
+                        </h2>
                     </div>
                     <div class="elementor-element elementor-element-31f04ebf elementor-countdown--label-block elementor-widget elementor-widget-countdown"
                         data-id="31f04ebf" data-element_type="widget" data-widget_type="countdown.default">
@@ -4110,9 +4070,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                         <div class="elementor-widget-container">
                                             <h2 class="elementor-heading-title elementor-size-default"><span
                                                     style="color:#000">Register before </span><span
-                                                    class="conf-deadline">26 January</span><span style="color:#000"> To
-                                                    unlock bonuses worth ₹ <span
-                                                        class="conf-bonus-val">10,488</span></span></h2>
+                                                    class="conf-deadline"></span><span style="color:#000"> To
+                                                    unlock bonuses worth ₹ <span class="conf-bonus-val"></span></span>
+                                            </h2>
                                         </div>
                                     </div>
                                     <div class="elementor-element elementor-element-33f58972 elementor-countdown--label-block elementor-widget elementor-widget-countdown"
@@ -4387,11 +4347,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     </div>
                     <div class="elementor-element elementor-element-8b61427 elementor-widget__width-inherit elementor-widget elementor-widget-heading"
                         data-id="8b61427" data-element_type="widget" data-widget_type="heading.default">
-                        <div class="elementor-widget-container">
-                            <h2 class="elementor-heading-title elementor-size-default"><span style="color:#fff">Register
-                                    before </span>26 January<span style="color:#fff"> To unlock bonuses worth ₹
-                                    10,488/-</span></h2>
-                        </div>
+                        <h2 class="elementor-heading-title elementor-size-default"><span style="color:#ffffff">Register
+                                before </span><span class="conf-deadline"></span><span style="color:#ffffff"> To unlock
+                                bonuses worth ₹ <span class="conf-bonus-val"></span></span>
+                        </h2>
                     </div>
                     <div class="elementor-element elementor-element-67a8bd08 elementor-widget elementor-widget-spacer"
                         data-id="67a8bd08" data-element_type="widget" data-widget_type="spacer.default">
@@ -4530,11 +4489,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 </div>
                 <div class="elementor-element elementor-element-169dc282 elementor-widget__width-inherit elementor-widget elementor-widget-heading"
                     data-id="169dc282" data-element_type="widget" data-widget_type="heading.default">
-                    <div class="elementor-widget-container">
-                        <h2 class="elementor-heading-title elementor-size-default"><span style="color:#000">Register
-                                before </span>26 January<span style="color:#000"> To unlock bonuses worth ₹
-                                10,488</span></h2>
-                    </div>
+                    <h2 class="elementor-heading-title elementor-size-default"><span style="color:#000">Register
+                            before </span><span class="conf-deadline"></span><span style="color:#000"> To unlock
+                            bonuses worth ₹ <span class="conf-bonus-val"></span></span>
+                    </h2>
                 </div>
             </div>
         </div>
@@ -5084,11 +5042,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     </div>
                     <div class="elementor-element elementor-element-5ba9f622 elementor-widget__width-inherit elementor-widget elementor-widget-heading"
                         data-id="5ba9f622" data-element_type="widget" data-widget_type="heading.default">
-                        <div class="elementor-widget-container">
-                            <h2 class="elementor-heading-title elementor-size-default"><span style="color:#fff">Register
-                                    before </span>26 January<span style="color:#fff"> To unlock bonuses worth ₹
-                                    10,488/-</span></h2>
-                        </div>
+                        <h2 class="elementor-heading-title elementor-size-default"><span style="color:#fff">Register
+                                before </span><span class="conf-deadline"></span><span style="color:#fff"> To
+                                unlock bonuses worth ₹ <span class="conf-bonus-val"></span></span>
+                        </h2>
                     </div>
                     <div class="elementor-element elementor-element-63501ba8 elementor-widget elementor-widget-spacer"
                         data-id="63501ba8" data-element_type="widget" data-widget_type="spacer.default">
@@ -5408,31 +5365,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     // Loop
                     setInterval(updateFomo, 20000); // Every 20 seconds
 
-                    if (closeFomo) {
-                        closeFomo.addEventListener('click', () => {
-                            fomo.classList.add('hide');
-                            setTimeout(() => {
-                                fomo.classList.remove('active');
-                            }, 500);
-                        });
-                    }
+                    // if (closeFomo) {
+                    //     closeFomo.addEventListener('click', () => {
+                    //         fomo.classList.add('hide');
+                    //         setTimeout(() => {
+                    //             fomo.classList.remove('active');
+                    //         }, 500);
+                    //     });
+                    // }
                 }
             });
         </script>
-        <style>
-            /* Global Scroll Animations */
-            .fade-in-up {
-                opacity: 0;
-                transform: translateY(30px);
-                transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-                will-change: opacity, transform;
-            }
 
-            .fade-in-up.visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        </style>
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
