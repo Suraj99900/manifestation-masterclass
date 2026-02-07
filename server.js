@@ -80,6 +80,6 @@ const server = http.createServer((req, res) => {
     });
 });
 
-console.log(`Server running at http://localhost:${PORT}/`);
-console.log(`To configure, open: http://localhost:${PORT}/admin.html`);
+console.log(`Server running at https://lifehealerkavita.com/manifestation/`);
+console.log(`To configure, open: https://lifehealerkavita.com/manifestation/admin.html`);
 server.listen(PORT);

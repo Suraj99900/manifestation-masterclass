@@ -212,7 +212,7 @@
             const config = getConfig();
             const msg = document.getElementById('msg');
 
-            fetch('/save-config', {
+            fetch('save-config', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(config)
