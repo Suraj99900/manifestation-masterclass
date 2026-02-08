@@ -563,7 +563,7 @@
                 const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
                 const isNodeServer = window.location.port === '3000';
                 const API_BASE = (isLocal && !isNodeServer) ? 'http://localhost:3000' : '';
-                fetch(`${API_BASE}/save-config`, {
+                fetch(`${API_BASE}/manifestation/save-config`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(config)
@@ -600,7 +600,7 @@
                 const isNodeServer = window.location.port === '3000';
                 const API_BASE = (isLocal && !isNodeServer) ? 'http://localhost:3000' : '';
 
-                fetch(`${API_BASE}/get-leads`)
+                fetch(`${API_BASE}/manifestation/get-leads`)
                     .then(r => r.json())
                     .then(leads => {
                         LEADS = Array.isArray(leads) ? leads : [];
