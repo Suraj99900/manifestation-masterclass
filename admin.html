@@ -2,253 +2,801 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Config Admin</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Event Admin — Horizontal Panel</title>
+
+    <!-- Iconsout (icons) -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/iconsout@1.0.0/css/iconsout.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="js/lib/line.css">
+
+    <!-- DataTables + Buttons CSS -->
+    <link rel="stylesheet" href="js/lib/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="js/lib/buttons.dataTables.min.css">
+
+    <!-- jQuery and DataTables + Buttons -->
+    <script src="js/lib/jquery-3.7.0.min.js"></script>
+    <script src="js/lib/jquery.dataTables.min.js"></script>
+    <script src="js/lib/dataTables.buttons.min.js"></script>
+    <script src="js/lib/buttons.html5.min.js"></script>
+    <script src="js/lib/jszip.min.js"></script>
+    <script src="js/lib/pdfmake.min.js"></script>
+    <script src="js/lib/vfs_fonts.js"></script>
+
     <style>
+        /* Page reset: no scroll anywhere */
+        html,
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            height: 100%;
             margin: 0;
-            padding: 20px;
+            overflow: hidden;
+            /* NO page scroll */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f9;
+            color: #222;
         }
 
-        .config-card {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
+        /* Top header */
+        .topbar {
+            height: 64px;
+            background: #2c3e50;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
         }
 
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
+        .topbar .title {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        .topbar .actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
+        /* Main horizontal layout */
+        .layout {
+            display: flex;
+            height: calc(100% - 64px);
+            /* full minus header */
+            gap: 18px;
+            padding: 18px;
             box-sizing: border-box;
-            transition: border-color 0.3s;
         }
 
-        input:focus {
-            border-color: #EC8D2B;
-            outline: none;
+        /* Left panel: narrow - small cards/sections */
+        .left {
+            width: 360px;
+            /* fixed width left panel */
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            overflow: hidden;
+            /* prevent scrollbars */
         }
 
-        .btn-save {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #EC8D2B, #d35400);
-            color: white;
-            border: none;
+        /* Right panel: table */
+        .right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            overflow: hidden;
+            /* prevent page scroll */
+        }
+
+        /* small card */
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 6px 18px rgba(18, 38, 63, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card.small {
+            padding: 10px;
+        }
+
+        .card .label {
+            font-weight: 700;
+            font-size: 13px;
+            color: #444;
+        }
+
+        .card .input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .card .input-row input[type="text"],
+        .card .input-row input[type="number"] {
+            flex: 1;
+            padding: 8px 10px;
             border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
+            border: 1px solid #e6e9ee;
+            font-size: 13px;
+            background: #fafbfc;
+            box-sizing: border-box;
+        }
+
+        /* info chips */
+        .info-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+
+        .chip {
+            background: linear-gradient(90deg, #fff, #fbfbfb);
+            border: 1px solid #eef1f4;
+            padding: 8px 10px;
+            border-radius: 8px;
+            min-width: 120px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .chip.small {
+            font-weight: 600;
+            font-size: 12px;
+            min-width: 90px;
+        }
+
+        /* action buttons group */
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            background: #EC8D2B;
+            border: none;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-bottom: 15px;
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            white-space: nowrap;
+            font-size: 13px;
         }
 
-        .btn-save:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(236, 141, 43, 0.3);
-        }
-
-        .btn-download {
+        .btn.ghost {
             background: #34495e;
         }
 
-        .success-msg {
+        .btn.green {
+            background: #27ae60;
+        }
+
+        .btn.small {
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+
+        /* DataTable Card stretches to fill right area */
+        .table-card {
+            flex: 1;
+            /* stretch */
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 0;
+            /* important for child overflow */
+        }
+
+        /* ensure table area doesn't create scroll on page; DataTable internal scroll disabled */
+        .dt-container {
+            flex: 1;
+            overflow: auto;
+            /* allow scrolling inside table area only if needed */
+            border-radius: 8px;
+            background: #fff;
+            padding: 12px;
+            box-shadow: 0 6px 18px rgba(18, 38, 63, 0.04);
+        }
+
+        /* compact table styles */
+        table.dataTable thead th {
+            background: #f8fafc;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* small inputs layout in left panel sections */
+        .row-2 {
+            display: flex;
+            gap: 8px;
+        }
+
+        .row-2 input {
+            flex: 1;
+        }
+
+        /* responsive adjustments but keep horizontal layout (no wrap) */
+        @media (max-width:1100px) {
+            .left {
+                width: 320px;
+            }
+        }
+
+        /* subtle helper */
+        .muted {
+            color: #6b7280;
+            font-size: 13px;
+        }
+    </style>
+    <style>
+        /* Login Overlay */
+        #login-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 350px;
             text-align: center;
-            color: #27ae60;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #EC8D2B;
+            color: white;
+            border: none;
+            border-radius: 6px;
             font-weight: bold;
-            margin-top: 15px;
-            opacity: 0;
-            transition: opacity 0.5s;
-            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
-        .links {
-            text-align: center;
-            margin-top: 25px;
+        .login-btn:hover {
+            background: #d35400;
         }
 
-        .links a {
-            color: #EC8D2B;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .links a:hover {
-            text-decoration: underline;
-        }
-
-        .note {
-            font-size: 12px;
-            color: #888;
-            text-align: center;
-            margin-top: 5px;
+        .error-msg {
+            color: red;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="config-card">
-        <h2>⚙️ Event Configuration</h2>
-
-        <div style="display: flex; gap: 20px;">
-            <div class="form-group" style="flex: 1;">
-                <label>Dates (e.g. 31st Feb)</label>
-                <input type="text" id="eventDate">
-            </div>
-            <div class="form-group" style="width: 100px;">
-                <label>Duration</label>
-                <input type="text" id="eventDays" placeholder="2">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Time (e.g. 10 AM - 12 PM)</label>
-            <input type="text" id="eventTime">
-        </div>
-
-        <div class="form-group">
-            <label>Registration Deadline</label>
-            <input type="text" id="deadline">
-        </div>
-
-        <div style="display: flex; gap: 20px;">
-            <div class="form-group" style="flex: 1;">
-                <label>Price (₹)</label>
-                <input type="number" id="price">
-            </div>
-            <div class="form-group" style="flex: 1;">
-                <label>Original (₹)</label>
-                <input type="number" id="originalPrice">
-            </div>
-            <div class="form-group" style="flex: 1;">
-                <label>Bonus (₹)</label>
-                <input type="text" id="bonusVal">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Payment Link (Razorpay/Stripe URL)</label>
-            <input type="text" id="paymentLink" placeholder="https://...">
-            <p class="note" style="text-align: left;">Leave blank to use default popup.</p>
-        </div>
-
-        <div class="form-group">
-            <label>Meeting Link (Zoom/Google Meet)</label>
-            <input type="text" id="meetingLink" placeholder="https://...">
-        </div>
-
-        <button class="btn-save" onclick="saveToServer()">🚀 Save Instantly (Requires Server)</button>
-        <button class="btn-save btn-download" onclick="downloadConfig()">💾 Manual Download (Fallback)</button>
-
-        <p class="success-msg" id="msg"></p>
-
-        <div class="links">
-            <a href="index.html" target="_blank">Open Landing Page ➜</a>
+    <!-- Login Section -->
+    <div id="login-section">
+        <div class="login-card">
+            <h2 style="margin-top:0; color:#333;">Admin Login</h2>
+            <input type="text" id="username" class="login-input" placeholder="Username" />
+            <input type="password" id="password" class="login-input" placeholder="Password" />
+            <button class="login-btn" onclick="checkLogin()">Login</button>
+            <p id="loginError" class="error-msg">Invalid Credentials</p>
         </div>
     </div>
 
-    <script>
-        // Load config
-        fetch('js/config.json')
-            .then(r => r.json())
-            .then(config => {
-                document.getElementById('eventDate').value = config.eventDate || "";
-                document.getElementById('eventTime').value = config.eventTime || "";
-                document.getElementById('deadline').value = config.deadline || "";
-                document.getElementById('price').value = config.price || "";
-                document.getElementById('originalPrice').value = config.originalPrice || "";
-                document.getElementById('bonusVal').value = config.bonusVal || "";
-                document.getElementById('eventDays').value = config.eventDays || "";
-                document.getElementById('paymentLink').value = config.paymentLink || "";
-                document.getElementById('meetingLink').value = config.meetingLink || "";
-            });
+    <!-- Main App (Hidden by default) -->
+    <div id="admin-app" style="display:none;">
+        <div class="topbar">
+            <div class="title"><i class="iconsout-calendar"></i> Event Admin</div>
+            <div class="actions">
+                <div class="muted" id="sessionTimer"
+                    style="min-width:70px; font-variant-numeric: tabular-nums; font-weight:bold; color:#e67e22;"></div>
+                <div class="muted">Signed in as <strong>Admin</strong></div>
+                <button class="btn small" onclick="logout()" style="background:#c0392b; color:white;"><i
+                        class="iconsout-logout"></i> Logout</button>
+                <button class="btn small" onclick="downloadConfig()"><i class="iconsout-download"></i> Export
+                    Config</button>
+            </div>
+        </div>
 
-        function getConfig() {
-            return {
-                eventDate: document.getElementById('eventDate').value,
-                eventTime: document.getElementById('eventTime').value,
-                deadline: document.getElementById('deadline').value,
-                price: document.getElementById('price').value,
-                originalPrice: document.getElementById('originalPrice').value,
-                bonusVal: document.getElementById('bonusVal').value,
-                eventDays: document.getElementById('eventDays').value,
-                paymentLink: document.getElementById('paymentLink').value,
-                meetingLink: document.getElementById('meetingLink').value
-            };
-        }
+        <div class="layout">
 
-        // Attempt to save to Node server
-        function saveToServer() {
-            const config = getConfig();
-            const msg = document.getElementById('msg');
+            <!-- LEFT: compact sections -->
+            <div class="left">
 
-            fetch('/manifestation/js/save-config', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(config)
-            })
-                .then(response => {
-                    if (response.ok) {
-                        msg.innerText = "✅ Successfully Saved to Server!";
-                        msg.style.color = "#27ae60";
-                        msg.style.opacity = '1';
-                        setTimeout(() => { msg.style.opacity = '0'; }, 3000);
-                    } else {
-                        throw new Error("Server error");
+                <!-- Quick stats -->
+                <div class="card small">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div class="label">Quick Stats</div>
+                        <div class="muted">Live</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="chip" id="totalLeads">Leads: —</div>
+                        <div class="chip" id="lastLead">Last: —</div>
+                    </div>
+                </div>
+
+                <!-- Event info -->
+                <div class="card">
+                    <div class="label">Event Info</div>
+                    <div class="input-row">
+                        <input type="text" id="eventDate" placeholder="Dates (e.g. 31 Jan)">
+                    </div>
+                    <div class="row-2">
+                        <input type="text" id="eventTime" placeholder="Time (e.g. 10 AM - 12 PM)">
+                        <input type="text" id="eventDays" placeholder="Duration (days)">
+                    </div>
+                    <div class="input-row">
+                        <input type="text" id="deadline" placeholder="Registration deadline">
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div class="card">
+                    <div class="label">Pricing</div>
+                    <div class="row-2">
+                        <input type="number" id="price" placeholder="Price (₹)">
+                        <input type="number" id="originalPrice" placeholder="Original (₹)">
+                    </div>
+                    <div class="input-row">
+                        <input type="text" id="bonusVal" placeholder="Bonus (₹)">
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div class="card">
+                    <div class="label">Links</div>
+                    <div class="input-row">
+                        <input type="text" id="paymentLink" placeholder="Payment link (Razorpay/Stripe)">
+                    </div>
+                    <div class="input-row">
+                        <input type="text" id="meetingLink" placeholder="Meeting link (Zoom/Meet)">
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="card small">
+                    <div class="label">Actions</div>
+                    <div class="btn-group">
+                        <button class="btn" onclick="saveToServer()"><i class="iconsout-save"></i> Save</button>
+                        <button class="btn ghost" onclick="loadLeads()"><i class="iconsout-users"></i> Refresh
+                            Leads</button>
+                        <button class="btn green" onclick="downloadCSV()"><i class="iconsout-download"></i>
+                            Excel</button>
+                    </div>
+                    <div class="muted" style="margin-top:8px; font-size:12px;">No vertical page scroll — table uses
+                        pagination.</div>
+                    <p id="msg" style="margin:0; font-weight:700; color:#27ae60; opacity:0;"></p>
+                </div>
+
+            </div>
+
+            <!-- RIGHT: table -->
+            <div class="right">
+
+                <div class="table-card card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <div style="font-weight:800; font-size:15px;"><i class="iconsout-clipboard"></i> Registered
+                                Users</div>
+                            <div class="muted" id="subtitle">All registrations (latest first)</div>
+                        </div>
+                        <!-- Table export buttons are rendered by DataTables buttons -->
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn small" onclick="downloadCSV()"><i class="iconsout-download"></i>
+                                CSV</button>
+                            <button class="btn small ghost" id="btn-export-excel" onclick="exportExcel()"><i
+                                    class="iconsout-file-excel"></i> Excel</button>
+                            <button class="btn small ghost" id="btn-export-pdf" onclick="exportPDF()"><i
+                                    class="iconsout-file-pdf"></i> PDF</button>
+                        </div>
+                    </div>
+
+                    <div class="dt-container">
+                        <table id="leadsTable" class="display" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Source</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- End admin-app -->
+
+        <script>
+            const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes
+            let sessionTicker;
+
+            function checkLogin() {
+                const u = document.getElementById('username').value;
+                const p = document.getElementById('password').value;
+                const err = document.getElementById('loginError');
+
+                // Hardcoded credentials (Admin/99900)
+                if (u === 'Admin' && p === '99900') {
+                    sessionStorage.setItem('admin_auth', 'true');
+                    sessionStorage.setItem('session_start', Date.now());
+                    showApp();
+                } else {
+                    err.style.display = 'block';
+                }
+            }
+
+            function showApp() {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('admin-app').style.display = 'block';
+                startTimer();
+            }
+
+            function logout() {
+                sessionStorage.clear();
+                clearInterval(sessionTicker);
+                document.getElementById('admin-app').style.display = 'none';
+                document.getElementById('login-section').style.display = 'flex';
+                // Clear inputs
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('loginError').style.display = 'none';
+            }
+
+            function startTimer() {
+                clearInterval(sessionTicker);
+                const el = document.getElementById('sessionTimer');
+
+                const tick = () => {
+                    const start = parseInt(sessionStorage.getItem('session_start') || 0);
+                    if (!start) { logout(); return; }
+
+                    const now = Date.now();
+                    const diff = SESSION_DURATION - (now - start);
+
+                    if (diff <= 0) {
+                        logout();
+                        alert("Session Timed Out");
+                        return;
                     }
+
+                    const m = Math.floor(diff / 60000);
+                    const s = Math.floor((diff % 60000) / 1000);
+                    el.innerText = `⏱️ ${m}:${s.toString().padStart(2, '0')}`;
+                };
+
+                tick();
+                sessionTicker = setInterval(tick, 1000);
+            }
+
+            // Auto-Check on Load
+            const auth = sessionStorage.getItem('admin_auth');
+            const sTime = parseInt(sessionStorage.getItem('session_start') || 0);
+            if (auth === 'true' && sTime && (Date.now() - sTime < SESSION_DURATION)) {
+                showApp();
+            } else {
+                if (auth) logout(); // clear partial session
+            }
+        </script>
+
+        <script>
+            // Keep a global store of leads for exports & stats
+            let LEADS = [];
+
+            // Utility: format timestamp nicely
+            function fmt(ts) {
+                if (!ts) return '-';
+                const d = new Date(ts);
+                if (isNaN(d)) return ts;
+                return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            // Load config.json into inputs (unchanged behavior)
+            fetch('js/config.json')
+                .then(r => r.ok ? r.json() : {})
+                .then(cfg => {
+                    document.getElementById('eventDate').value = cfg.eventDate || '';
+                    document.getElementById('eventTime').value = cfg.eventTime || '';
+                    document.getElementById('deadline').value = cfg.deadline || '';
+                    document.getElementById('price').value = cfg.price || '';
+                    document.getElementById('originalPrice').value = cfg.originalPrice || '';
+                    document.getElementById('bonusVal').value = cfg.bonusVal || '';
+                    document.getElementById('eventDays').value = cfg.eventDays || '';
+                    document.getElementById('paymentLink').value = cfg.paymentLink || '';
+                    document.getElementById('meetingLink').value = cfg.meetingLink || '';
                 })
-                .catch(err => {
-                    msg.innerText = "⚠️ Server Not Running. Try 'Manual Download'.";
+                .catch(() => {/* ignore */ });
+
+            // Get config helper
+            function getConfig() {
+                return {
+                    eventDate: document.getElementById('eventDate').value,
+                    eventTime: document.getElementById('eventTime').value,
+                    deadline: document.getElementById('deadline').value,
+                    price: document.getElementById('price').value,
+                    originalPrice: document.getElementById('originalPrice').value,
+                    bonusVal: document.getElementById('bonusVal').value,
+                    eventDays: document.getElementById('eventDays').value,
+                    paymentLink: document.getElementById('paymentLink').value,
+                    meetingLink: document.getElementById('meetingLink').value
+                };
+            }
+
+            // Save to server (same behavior)
+            function saveToServer() {
+                const config = getConfig();
+                const msg = document.getElementById('msg');
+                const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+                const isNodeServer = window.location.port === '3000';
+                const API_BASE = (isLocal && !isNodeServer) ? 'http://localhost:3000' : '';
+                fetch(`${API_BASE}/save-config`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(config)
+                }).then(r => {
+                    if (r.ok) {
+                        msg.innerText = "✅ Saved!";
+                        msg.style.color = "#27ae60";
+                        msg.style.opacity = 1;
+                        setTimeout(() => msg.style.opacity = 0, 2500);
+                    } else throw new Error('Failed');
+                }).catch(e => {
+                    msg.innerText = "⚠️ Server not available. Use export.";
                     msg.style.color = "#e74c3c";
-                    msg.style.opacity = '1';
+                    msg.style.opacity = 1;
                 });
-        }
+            }
 
-        // Fallback Download
-        function downloadConfig() {
-            const config = getConfig();
-            const blob = new Blob([JSON.stringify(config, null, 4)], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "config.json";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-    </script>
+            // Download config (client-side)
+            function downloadConfig() {
+                const blob = new Blob([JSON.stringify(getConfig(), null, 2)], { type: 'application/json' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'config.json';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(a.href);
+            }
 
+            // Fetch leads and render table
+            let DATA_TABLE = null;
+            function loadLeads() {
+                const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+                const isNodeServer = window.location.port === '3000';
+                const API_BASE = (isLocal && !isNodeServer) ? 'http://localhost:3000' : '';
+
+                fetch(`${API_BASE}/get-leads`)
+                    .then(r => r.json())
+                    .then(leads => {
+                        LEADS = Array.isArray(leads) ? leads : [];
+                        // ensure latest first
+                        LEADS.reverse();
+
+                        // update stats
+                        document.getElementById('totalLeads').innerText = 'Leads: ' + LEADS.length;
+                        document.getElementById('lastLead').innerText = 'Last: ' + (LEADS[0] ? fmt(LEADS[0].timestamp) : '-');
+
+                        // populate table body
+                        const tbody = $('#leadsTable tbody');
+                        tbody.empty();
+                        LEADS.forEach(l => {
+                            tbody.append(`
+              <tr>
+                <td>${escapeHtml(l.name || '-')}</td>
+                <td>${escapeHtml(l.email || '-')}</td>
+                <td>${escapeHtml(l.phone || '-')}</td>
+                <td>${escapeHtml(l.source || '-')}</td>
+                <td>${escapeHtml(fmt(l.timestamp || '-'))}</td>
+              </tr>
+            `);
+                        });
+
+                        // initialize or redraw DataTable
+                        if (DATA_TABLE) {
+                            DATA_TABLE.clear().rows.add($('#leadsTable tbody tr')).draw(false);
+                        } else {
+                            DATA_TABLE = $('#leadsTable').DataTable({
+                                pageLength: 8,
+                                lengthChange: false,
+                                ordering: true,
+                                order: [[4, 'desc']], // order by timestamp column
+                                dom: 'Bfrtip',
+                                buttons: [
+                                    {
+                                        extend: 'excelHtml5',
+                                        title: 'leads_export',
+                                        exportOptions: { columns: [0, 1, 2, 3, 4] }
+                                    },
+                                    {
+                                        extend: 'pdfHtml5',
+                                        text: 'PDF',
+                                        title: 'Manifestation Masterclass — Users Report',
+                                        orientation: 'landscape',
+                                        pageSize: 'A4',
+                                        exportOptions: { columns: [0, 1, 2, 3, 4] },
+                                        customize: function (doc) {
+                                            // Title Styling
+                                            doc.styles.title = {
+                                                color: '#2c3e50',
+                                                fontSize: 20,
+                                                bold: true,
+                                                alignment: 'center',
+                                                margin: [0, 10, 0, 30] // top, right, bottom, left
+                                            };
+
+                                            // Table Header Styling
+                                            doc.styles.tableHeader = {
+                                                fillColor: '#2c3e50',
+                                                color: 'white',
+                                                bold: true,
+                                                fontSize: 12,
+                                                alignment: 'center',
+                                                margin: [0, 5, 0, 5]
+                                            };
+
+                                            // Table Body Styling
+                                            doc.defaultStyle.fontSize = 11;
+                                            doc.styles.tableBodyEven = { alignment: 'center' };
+                                            doc.styles.tableBodyOdd = { alignment: 'center' };
+
+                                            // Ensure table occupies full width
+                                            // pdfMake "widths": "*" distributes columns evenly
+                                            if (doc.content[1] && doc.content[1].table) {
+                                                doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+
+                                                // Add some padding to rows
+                                                const body = doc.content[1].table.body;
+                                                for (let i = 1; i < body.length; i++) {
+                                                    body[i].forEach(cell => {
+                                                        cell.margin = [0, 5, 0, 5];
+                                                        cell.alignment = 'center';
+                                                    });
+                                                }
+                                            }
+
+                                            // Add Generated Date footer
+                                            const now = new Date().toLocaleString();
+                                            doc.content.splice(1, 0, {
+                                                text: 'Generated on: ' + now,
+                                                alignment: 'right',
+                                                fontSize: 10,
+                                                color: '#7f8c8d',
+                                                margin: [0, 0, 0, 10]
+                                            });
+
+                                            // Custom Footer
+                                            doc['footer'] = function (currentPage, pageCount) {
+                                                return {
+                                                    text: 'Page ' + currentPage.toString() + ' of ' + pageCount,
+                                                    alignment: 'center',
+                                                    fontSize: 9,
+                                                    color: '#95a5a6',
+                                                    margin: [0, 10]
+                                                };
+                                            };
+                                        }
+                                    }
+                                ],
+                                // responsive: true,
+                                language: { emptyTable: "No registrations yet." }
+                            });
+
+                            // hide default datatables buttons (we use our own)
+                            $('.dt-button').css({ display: 'none' });
+                        }
+
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        // fallback: empty array
+                        LEADS = [];
+                        document.getElementById('totalLeads').innerText = 'Leads: 0';
+                        document.getElementById('lastLead').innerText = 'Last: -';
+                    });
+            }
+
+            // small helpers for export buttons
+            function exportExcel() {
+                if (DATA_TABLE) {
+                    DATA_TABLE.button(0).trigger();
+                } else {
+                    alert('No data to export');
+                }
+            }
+            function exportPDF() {
+                if (DATA_TABLE) {
+                    DATA_TABLE.button(1).trigger();
+                } else {
+                    alert('No data to export');
+                }
+            }
+
+            // CSV download convenience (client-side)
+            function downloadCSV() {
+                if (!LEADS || LEADS.length === 0) { alert('No data to download'); return; }
+                const headers = ['Name', 'Email', 'Phone', 'Source', 'Timestamp'];
+                const rows = LEADS.map(l => [
+                    csvSafe(l.name || ''),
+                    csvSafe(l.email || ''),
+                    csvSafe(l.phone || ''),
+                    csvSafe(l.source || ''),
+                    csvSafe(l.timestamp || '')
+                ]);
+                let csv = headers.join(',') + '\n' + rows.map(r => r.join(',')).join('\n');
+                const uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+                const a = document.createElement('a');
+                a.href = uri;
+                a.download = 'leads.csv';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            }
+
+            // Utilities
+            function csvSafe(s) { return `"${String(s).replace(/"/g, '""')}"`; }
+            function escapeHtml(text) {
+                if (typeof text !== 'string') return text;
+                return text.replace(/[&<>"'`=\/]/g, function (s) {
+                    return ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        '"': '&quot;',
+                        "'": '&#39;',
+                        '/': '&#x2F;'
+                    })[s];
+                });
+            }
+
+            // init
+            loadLeads();
+
+            // keep table refreshed periodically (optional) — disabled by default to avoid background work
+            // setInterval(loadLeads, 60 * 1000);
+
+            // expose for debugging
+            window.loadLeads = loadLeads;
+            window.exportExcel = exportExcel;
+            window.exportPDF = exportPDF;
+            window.downloadCSV = downloadCSV;
+            window.saveToServer = saveToServer;
+            window.downloadConfig = downloadConfig;
+        </script>
 </body>
 
 </html>

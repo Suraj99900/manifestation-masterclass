@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
             }
+            window.eventConfig = config;
             console.log(config)
             updateText("conf-price", config.price);
             updateText("conf-original-price", config.originalPrice);
@@ -40,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
             updateText("conf-deadline", config.deadline);
             updateText("conf-event-days", config.eventDays);
 
-            updateLink("conf-payment-button", config.paymentLink);
+            // updateLink("conf-payment-button", config.paymentLink);
             updateLink("conf-meeting-link", config.meetingLink);
 
             // Update Razorpay Global Variable for Payment
